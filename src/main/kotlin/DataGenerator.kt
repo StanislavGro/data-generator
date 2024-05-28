@@ -2,7 +2,6 @@ package ru.one.files
 
 import org.json.JSONObject
 import ru.one.files.Constants.FOLDER_NAME
-import ru.one.files.Constants.GENERATOR_COUNT
 import ru.one.files.Constants.SEPARATOR
 import ru.one.files.Constants.TEMPLATE_DATA_FILE_NAME
 import ru.one.files.Constants.defaultIntRange
@@ -11,9 +10,16 @@ import ru.one.files.Constants.defaultStrRange
 import ru.one.files.Constants.formatter
 import ru.one.files.Constants.zoneId
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.time.Instant
 import java.time.LocalDateTime
+import kotlin.io.path.isDirectory
 import kotlin.random.Random
+
+
+// File constants
+var GENERATOR_COUNT: Int = 0
 
 fun main(args: Array<String>) {
 
@@ -21,9 +27,15 @@ fun main(args: Array<String>) {
 
 //    for (i in 1..10000) {
 
+    try {
+        GENERATOR_COUNT = args[0].toInt()
+    } catch (e: Exception) {
+        throw Exception(e)
+    }
+
     val startTime = Instant.now().toEpochMilli()
 
-    val inputFile = File(TEMPLATE_DATA_FILE_NAME)
+    val inputFile = Paths.get(TEMPLATE_DATA_FILE_NAME).toFile()
 
     val jsonString = inputFile.inputStream().readAndClose()
     val jsonObject = JSONObject(jsonString)
@@ -33,16 +45,18 @@ fun main(args: Array<String>) {
             it.value.toString()
         }
 
-    val generatorRange = IntRange(0, GENERATOR_COUNT - 1)
+    val generatorRange = IntRange(0, args[0].toInt() - 1)
 
     val outputFileName = outputFileName()
-    val outputFile = File("$FOLDER_NAME/$outputFileName")
 
-    outputFile.createNewFile()
+    if (!Paths.get(FOLDER_NAME).isDirectory()) {
+        Files.createDirectory(Paths.get(FOLDER_NAME))
+    }
+    val outputFile = Files.createFile(Paths.get("$FOLDER_NAME/$outputFileName")).toFile()
 
     fillOutputFile(outputFile, generatorRange, jsonMap)
 
-    println("Time: ${((Instant.now().toEpochMilli() - startTime).toDouble() / 1000)} c")
+    println("Time: ${((Instant.now().toEpochMilli() - startTime).toDouble() / 1000)} sec")
 
 //        timeList.add((Instant.now().toEpochMilli() - startTime).toDouble() / 1000)
 //    }

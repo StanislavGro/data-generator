@@ -18,7 +18,7 @@ object Constants {
     // File constants
     const val TEMPLATE_DATA_FILE_NAME = "rows.json"
     const val FOLDER_NAME = "test-data"
-    const val GENERATOR_COUNT = 500000
+//    const val GENERATOR_COUNT = 500000
     const val SEPARATOR = ","
-    
+
 }

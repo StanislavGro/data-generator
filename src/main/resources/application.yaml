@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+file-storage:
+  template: "file-storage/template"
+  generated-data: "file-storage/generated-data"

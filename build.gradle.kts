@@ -2,16 +2,24 @@ plugins {
     kotlin("jvm") version "1.9.22"
 }
 
-group = "ru.one.files"
-//version = "1.0-SNAPSHOT"
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    // Test
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+
+    // Spring
+    implementation("org.springframework.boot:spring-boot-starter-web:3.2.1")
+//    implementation("org.springframework.boot:spring-boot-starter-jdbc:3.3.0")
+
     implementation("org.json:json:20230227")
+
+    implementation("org.postgresql:postgresql:42.5.0")
 }
 
 tasks.test {
